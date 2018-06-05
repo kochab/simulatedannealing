@@ -1,4 +1,4 @@
-package xyz.thepathfinder.simulatedannealing;
+package org.kochab.simulatedannealing;
 
 public class LinearDecayScheduler implements Scheduler {
     final double initialTemperature;

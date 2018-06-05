@@ -1,4 +1,4 @@
-package xyz.thepathfinder.simulatedannealing;
+package org.kochab.simulatedannealing;
 
 public class ExponentialDecayScheduler implements Scheduler {
     static final double EPSILON = 0.001;

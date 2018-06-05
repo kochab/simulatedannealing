@@ -1,4 +1,4 @@
-package xyz.thepathfinder.simulatedannealing;
+package org.kochab.simulatedannealing;
 
 public interface Problem<T extends SearchState<T>> {
     T initialState() throws InfeasibleProblemException;

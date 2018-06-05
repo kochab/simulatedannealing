@@ -1,4 +1,4 @@
-package xyz.thepathfinder.simulatedannealing;
+package org.kochab.simulatedannealing;
 
 import java.util.Random;
 
