@@ -5,11 +5,16 @@ import java.util.Random;
 public class Solver<T extends SearchState<T>> {
     final Problem<T> problem;
     final Scheduler scheduler;
-    final Random random = new Random();
+    final Random random;
 
-    public Solver(Problem<T> problem, Scheduler scheduler) {
+    public Solver(Problem<T> problem, Scheduler scheduler, Random random) {
         this.problem = problem;
         this.scheduler = scheduler;
+        this.random = random;
+    }
+    
+    public Solver(Problem<T> problem, Scheduler scheduler) {
+        this(problem, scheduler, new Random());
     }
 
     public T solve() throws InfeasibleProblemException {
