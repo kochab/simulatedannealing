@@ -7,7 +7,7 @@ public class GeometricDecayScheduler implements Scheduler {
 
     public GeometricDecayScheduler(double initialTemperature, int totalSteps) {
         this.initialTemperature = initialTemperature;
-        alpha = Math.pow(EPSILON, 1.0 / totalSteps);
+        alpha = Math.pow(EPSILON / initialTemperature, 1.0 / totalSteps);
     }
 
     @Override
