@@ -26,7 +26,7 @@ public class Solver<T extends SearchState<T>> {
             if (temperature <= 0.0) {
                 return minState;
             }
-            T nextState = currentState.step();
+            T nextState = currentState.step(temperature / scheduler.getTemperature(0));
             double energyChange = problem.energy(nextState) - problem.energy(currentState);
             if (acceptChange(temperature, energyChange)) {
                 currentState = nextState;
