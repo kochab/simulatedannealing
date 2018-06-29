@@ -8,15 +8,15 @@ Using [jitpack.io](https://jitpack.io/#kochab/simulatedannealing)
 
 ```xml
 <repositories>
-	<repository>
-	    <id>jitpack.io</id>
-	    <url>https://jitpack.io</url>
-	</repository>
+  <repository>
+    <id>jitpack.io</id>
+    <url>https://jitpack.io</url>
+  </repository>
 </repositories>
 <dependency>
-    <groupId>com.github.kochab</groupId>
-    <artifactId>simulatedannealing</artifactId>
-    <version>0.0.7</version>
+  <groupId>com.github.kochab</groupId>
+  <artifactId>simulatedannealing</artifactId>
+  <version>0.0.7</version>
 </dependency>
 ```
 
