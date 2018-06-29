@@ -1,23 +1,23 @@
 # Simulated Annealing
 
-A simple framework for solving optimization problems by simulated annealing, based on pathfinder's original implementation (https://github.com/csse497/pathfinder-routing).
+A simple framework for solving optimization problems by simulated annealing, based on [pathfinder's original implementation](https://github.com/csse497/pathfinder-routing).
 
 ## Install
 
 Using [jitpack.io](https://jitpack.io/#kochab/simulatedannealing)
 
 ```xml
-	<repositories>
-		<repository>
-		    <id>jitpack.io</id>
-		    <url>https://jitpack.io</url>
-		</repository>
-	</repositories>
-	<dependency>
-	    <groupId>com.github.kochab</groupId>
-	    <artifactId>simulatedannealing</artifactId>
-	    <version>0.0.7</version>
-	</dependency>
+<repositories>
+	<repository>
+	    <id>jitpack.io</id>
+	    <url>https://jitpack.io</url>
+	</repository>
+</repositories>
+<dependency>
+    <groupId>com.github.kochab</groupId>
+    <artifactId>simulatedannealing</artifactId>
+    <version>0.0.7</version>
+</dependency>
 ```
 
 ## Usage
