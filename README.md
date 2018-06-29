@@ -1,10 +1,24 @@
 # Simulated Annealing
 
-A simple framework for solving optimization problems by simulated annealing.
+A simple framework for solving optimization problems by simulated annealing, based on pathfinder's original implementation (https://github.com/csse497/pathfinder-routing).
 
-## Why does this exist?
+## Install
 
-Pathfinder solves the k-Vehicle Routing Problem using simulated annealing at https://github.com/csse497/pathfinder-routing. We couldn't find any existing frameworks we liked and it was simple enough to implement, so we created our own.
+Using [jitpack.io](https://jitpack.io/#kochab/simulatedannealing)
+
+```xml
+	<repositories>
+		<repository>
+		    <id>jitpack.io</id>
+		    <url>https://jitpack.io</url>
+		</repository>
+	</repositories>
+	<dependency>
+	    <groupId>com.github.kochab</groupId>
+	    <artifactId>simulatedannealing</artifactId>
+	    <version>0.0.7</version>
+	</dependency>
+```
 
 ## Usage
 You will need to implement the `SearchState<T>` interface. It defines only one method, `T step()`, which should return a randomly chosen deviation from the current state. Also, you will need to implement the `Problem<T>` interface, which initializes a state and evaluates the energey of states.
