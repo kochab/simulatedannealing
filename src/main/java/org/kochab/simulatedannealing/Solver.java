@@ -19,14 +19,25 @@ public class Solver<T extends SearchState<T>> {
 
     public T solve() throws InfeasibleProblemException {
         T currentState = problem.initialState();
+        while(!Double.isFinite(problem.energy(currentState))) {
+            currentState = currentState.step();
+        }
+
         T minState = currentState;
         int steps = 0;
-        while (true) {
+
+        for (;;) {
             double temperature = scheduler.getTemperature(steps++);
+
             if (temperature <= 0.0) {
                 return minState;
             }
-            T nextState = currentState.step(temperature / scheduler.getTemperature(0));
+
+            T nextState = currentState.step();
+            while (!Double.isFinite(problem.energy(nextState))) {
+                nextState = currentState.step();
+            }
+
             double energyChange = problem.energy(nextState) - problem.energy(currentState);
             if (acceptChange(temperature, energyChange)) {
                 currentState = nextState;
