@@ -11,7 +11,7 @@ public class ExponentialDecayScheduler implements Scheduler {
     }
 
     @Override
-    public double getTemperature(int steps) {
+    public double getTemperature(long steps) {
         double temperature = initialTemperature * Math.exp(decayRate * steps);
         return temperature < EPSILON ? 0 : temperature;
     }

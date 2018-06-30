@@ -10,7 +10,7 @@ public class LinearDecayScheduler implements Scheduler {
     }
 
     @Override
-    public double getTemperature(int steps) {
+    public double getTemperature(long steps) {
         return (1 - ((double) steps) / totalSteps) * initialTemperature;
     }
 }
