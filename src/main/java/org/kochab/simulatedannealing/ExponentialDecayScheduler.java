@@ -5,7 +5,7 @@ public class ExponentialDecayScheduler implements Scheduler {
     final double initialTemperature;
     final double decayRate;
 
-    public ExponentialDecayScheduler(double initialTemperature, int totalSteps) {
+    public ExponentialDecayScheduler(double initialTemperature, long totalSteps) {
         this.initialTemperature = initialTemperature;
         decayRate = Math.log(EPSILON / initialTemperature) / totalSteps;
     }

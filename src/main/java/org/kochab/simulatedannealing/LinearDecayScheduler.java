@@ -2,9 +2,9 @@ package org.kochab.simulatedannealing;
 
 public class LinearDecayScheduler implements Scheduler {
     final double initialTemperature;
-    final int totalSteps;
+    final long totalSteps;
 
-    public LinearDecayScheduler(double initialTemperature, int totalSteps) {
+    public LinearDecayScheduler(double initialTemperature, long totalSteps) {
         this.initialTemperature = initialTemperature;
         this.totalSteps = totalSteps;
     }
