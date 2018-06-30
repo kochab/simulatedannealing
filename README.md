@@ -1,6 +1,6 @@
 # Simulated Annealing
 
-A simple framework for solving optimization problems by simulated annealing, based on [pathfinder's original implementation](https://github.com/csse497/pathfinder-routing).
+A library for solving optimization problems by simulated annealing, based on [pathfinder's original implementation](https://github.com/csse497/pathfinder-routing).
 
 ## Install
 
