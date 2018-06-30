@@ -34,6 +34,10 @@ Solver<VRPSearchState> solver = new Solver(problem, scheduler);
 VRPSearchState solution = solver.solve();
 ```
 
+## Examples
+
+See [kochab/simulatedannealing-examples](https://github.com/kochab/simulatedannealing-examples) for a simple demo program that uses simulated annealing to solve a graphical optimization problem (minimizing adjacent difference between pixels).
+
 ## LICENSE
 
 [MIT](https://raw.githubusercontent.com/kochab/simulatedannealing/master/LICENSE).
