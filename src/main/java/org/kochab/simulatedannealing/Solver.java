@@ -55,11 +55,14 @@ public class Solver<T extends SearchState<T>> {
      */
     public T solve() {
         T currentState = problem.initialState();
-        while (!Double.isFinite(problem.energy(currentState))) {
+        double currentStateEnergy = problem.energy(currentState);
+        while (!Double.isFinite(currentStateEnergy)) {
             currentState = currentState.step();
+            currentStateEnergy = problem.energy(currentState);
         }
 
         T minState = currentState;
+        double minStateEnergy = currentStateEnergy;
         long steps = 0;
 
         for (;;) {
@@ -70,17 +73,21 @@ public class Solver<T extends SearchState<T>> {
             }
 
             T nextState = currentState.step();
-            while (!Double.isFinite(problem.energy(nextState))) {
+            double nextStateEnergy = problem.energy(nextState);
+            while (!Double.isFinite(nextStateEnergy)) {
                 nextState = currentState.step();
+                nextStateEnergy = problem.energy(nextState);
             }
 
-            double energyChange = problem.energy(nextState) - problem.energy(currentState);
+            double energyChange = nextStateEnergy - currentStateEnergy;
             if (acceptChange(temperature, energyChange)) {
                 currentState = nextState;
-                if (problem.energy(currentState) < problem.energy(minState)) {
+                currentStateEnergy = nextStateEnergy;
+                if (currentStateEnergy < minStateEnergy) {
                     minState = currentState;
+                    minStateEnergy = currentStateEnergy;
                     if (listener != null) {
-                        listener.onMinimum(temperature, steps, minState);
+                        listener.onMinimum(temperature, steps, minState, minStateEnergy);
                     }
                 }
             }

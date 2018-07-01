@@ -12,7 +12,8 @@ public interface MinimumListener<T extends SearchState<T>> {
      *
      * @param temperature The temperature the new minimum was found at.
      * @param steps The iteration the new minimum was found at.
-     * @param searchState The newly-discovered local minimum.
+     * @param minState The newly-discovered local minimum.
+     * @param minStateEnergy The energy level of the newly-discovered minimum.
      */
-    void onMinimum(double temperature, long steps, T searchState);
+    void onMinimum(double temperature, long steps, T minState, double minStateEnergy);
 }
