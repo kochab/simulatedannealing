@@ -10,7 +10,9 @@ public interface MinimumListener<T extends SearchState<T>> {
     /**
      * Called when a new minimum has been found by the solver.
      *
+     * @param temperature The temperature the new minimum was found at.
+     * @param steps The iteration the new minimum was found at.
      * @param searchState The newly-discovered local minimum.
      */
-    void onMinimum(T searchState);
+    void onMinimum(double temperature, long steps, T searchState);
 }

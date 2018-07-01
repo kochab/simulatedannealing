@@ -80,7 +80,7 @@ public class Solver<T extends SearchState<T>> {
                 if (problem.energy(currentState) < problem.energy(minState)) {
                     minState = currentState;
                     if (listener != null) {
-                        listener.onMinimum(minState);
+                        listener.onMinimum(temperature, steps, minState);
                     }
                 }
             }
