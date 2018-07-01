@@ -16,7 +16,7 @@ Using [jitpack.io](https://jitpack.io/#kochab/simulatedannealing)
 <dependency>
   <groupId>com.github.kochab</groupId>
   <artifactId>simulatedannealing</artifactId>
-  <version>0.0.10</version>
+  <version>0.0.12</version>
 </dependency>
 ```
 
