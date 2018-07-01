@@ -21,7 +21,7 @@ Using [jitpack.io](https://jitpack.io/#kochab/simulatedannealing)
 ```
 
 ## Usage
-You will need to implement the `SearchState<T>` interface. It defines only one method, `T step()`, which should return a randomly chosen deviation from the current state. Also, you will need to implement the `Problem<T>` interface, which initializes a state and evaluates the energey of states.
+You will need to implement the `SearchState<T>` interface. It defines only one method, `T step()`, which should return a randomly chosen perturbation of the current state. Also, you will need to implement the `Problem<T>` interface, which initializes a state and evaluates the energey of states.
 
 You will need to choose a `Scheduler` implementation, which determines the speed and shape of the annealing process. We provide two built-in options, `LinearDecayScheduler` and `ExponentialDecayScheduler`.
 
