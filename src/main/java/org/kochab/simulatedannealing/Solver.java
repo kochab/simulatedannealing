@@ -11,7 +11,22 @@ public class Solver<T extends SearchState<T>> {
     final Problem<T> problem;
     final Scheduler scheduler;
     final Random random;
-    MinimumListener<? super T> listener;
+    final MinimumListener<? super T> listener;
+
+    /**
+     * Creates a new optimizer.
+     *
+     * @param problem The minimization problem's representation.
+     * @param scheduler The annealing scheduler to use.
+     * @param random The random number source to use for calculating acceptance probabilities.
+     * @param listener The minimum listener used for this optimizer.
+     */
+    public Solver(Problem<T> problem, Scheduler scheduler, Random random, MinimumListener<? super T> listener) {
+        this.problem = problem;
+        this.scheduler = scheduler;
+        this.random = random;
+        this.listener = listener;
+    }
 
     /**
      * Creates a new optimizer.
@@ -21,31 +36,29 @@ public class Solver<T extends SearchState<T>> {
      * @param random The random number source to use for calculating acceptance probabilities.
      */
     public Solver(Problem<T> problem, Scheduler scheduler, Random random) {
-        this.problem = problem;
-        this.scheduler = scheduler;
-        this.random = random;
+        this(problem, scheduler, random, null);
     }
 
     /**
-     * Creates a new optimizer that uses java.util.Random to calculated acceptance
-     * probabilities.
+     * Creates a new optimizer.
+     *
+     * @param problem The minimization problem's representation.
+     * @param scheduler The annealing scheduler to use.
+     * @param listener The minimum listener used for this optimizer.
+     */
+    public Solver(Problem<T> problem, Scheduler scheduler, MinimumListener<? super T> listener) {
+        this(problem, scheduler, new Random(), listener);
+    }
+
+
+    /**
+     * Creates a new optimizer.
      *
      * @param problem The minimization problem's representation.
      * @param scheduler The annealing scheduler to use.
      */
     public Solver(Problem<T> problem, Scheduler scheduler) {
-        this(problem, scheduler, new Random());
-    }
-
-    /**
-     * Sets the minimum listener for this optimizer.
-     *
-     * The listener callback will be called when a new local minimum is discovered.
-     *
-     * @param listener The minimum listener to use.
-     */
-    public void setListener(MinimumListener<? super T> listener) {
-        this.listener = listener;
+        this(problem, scheduler, new Random(), null);
     }
 
     /**
@@ -54,41 +67,58 @@ public class Solver<T extends SearchState<T>> {
      * @return The state with the least amount of energy (minimum).
      */
     public T solve() {
+        // Generate the initial state.
         T currentState = problem.initialState();
         double currentStateEnergy = problem.energy(currentState);
+
+        // If the initial state is invalid (energy=NaN), keep trying mutating it until a state with a valid
+        // (non-NaN) energy is produced.
         while (!Double.isFinite(currentStateEnergy)) {
             currentState = currentState.step();
             currentStateEnergy = problem.energy(currentState);
         }
 
+        // At the first iteration, the minimum state (i.e. state with the least energy) is the initial state.
         T minState = currentState;
         double minStateEnergy = currentStateEnergy;
+
         long steps = 0;
 
         for (;;) {
             double temperature = scheduler.getTemperature(steps++);
 
+            // Terminate the annealing if the cooling ends (temperature reaches zero).
             if (temperature <= 0.0) {
                 return minState;
             }
 
+            // Generate the next state.
             T nextState = currentState.step();
+
+            // If the next state is invalid (energy=NaN), keep mutating its predecessor until a state with
+            // a valid (non-NaN) energy value is produced.
             double nextStateEnergy = problem.energy(nextState);
             while (!Double.isFinite(nextStateEnergy)) {
                 nextState = currentState.step();
                 nextStateEnergy = problem.energy(nextState);
             }
 
+            // Calculate the change in energy between the next state and its predecessor.
             double energyChange = nextStateEnergy - currentStateEnergy;
+
             if (acceptChange(temperature, energyChange)) {
+                // On acceptance, the successor state becomes the current state (state transition).
                 currentState = nextState;
                 currentStateEnergy = nextStateEnergy;
+
+                // Check if the state we transitioned into is a new local minimum (i.e. has less energy than our
+                // current minimum).
                 if (currentStateEnergy < minStateEnergy) {
+                    // Update the best-so-far minimum.
                     minState = currentState;
                     minStateEnergy = currentStateEnergy;
-                    final MinimumListener<? super T> ml = listener;
-                    if (ml != null) {
-                        ml.onMinimum(temperature, steps, minState, minStateEnergy);
+                    if (listener != null) {
+                        listener.onMinimum(temperature, steps, minState, minStateEnergy);
                     }
                 }
             }
