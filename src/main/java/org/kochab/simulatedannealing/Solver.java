@@ -50,7 +50,6 @@ public class Solver<T extends SearchState<T>> {
         this(problem, scheduler, new Random(), listener);
     }
 
-
     /**
      * Creates a new optimizer.
      *
@@ -69,18 +68,15 @@ public class Solver<T extends SearchState<T>> {
     public T solve() {
         // Generate the initial state.
         T currentState = problem.initialState();
-        double currentStateEnergy = problem.energy(currentState);
 
         // If the initial state is invalid (energy=NaN), keep trying mutating it until a state with a valid
         // (non-NaN) energy is produced.
-        while (!Double.isFinite(currentStateEnergy)) {
+        while (!Double.isFinite(problem.energy(currentState))) {
             currentState = currentState.step();
-            currentStateEnergy = problem.energy(currentState);
         }
 
         // At the first iteration, the minimum state (i.e. state with the least energy) is the initial state.
         T minState = currentState;
-        double minStateEnergy = currentStateEnergy;
 
         long steps = 0;
 
@@ -97,28 +93,25 @@ public class Solver<T extends SearchState<T>> {
 
             // If the next state is invalid (energy=NaN), keep mutating its predecessor until a state with
             // a valid (non-NaN) energy value is produced.
-            double nextStateEnergy = problem.energy(nextState);
-            while (!Double.isFinite(nextStateEnergy)) {
+            while (!Double.isFinite(problem.energy(nextState))) {
                 nextState = currentState.step();
-                nextStateEnergy = problem.energy(nextState);
             }
 
             // Calculate the change in energy between the next state and its predecessor.
-            double energyChange = nextStateEnergy - currentStateEnergy;
+            double energyChange = problem.energy(nextState) - problem.energy(currentState);
 
             if (acceptChange(temperature, energyChange)) {
                 // On acceptance, the successor state becomes the current state (state transition).
                 currentState = nextState;
-                currentStateEnergy = nextStateEnergy;
 
                 // Check if the state we transitioned into is a new local minimum (i.e. has less energy than our
                 // current minimum).
-                if (currentStateEnergy < minStateEnergy) {
+                if (problem.energy(currentState) < problem.energy(minState)) {
                     // Update the best-so-far minimum.
                     minState = currentState;
-                    minStateEnergy = currentStateEnergy;
+                    // Call the minimum listener callback if it exists.
                     if (listener != null) {
-                        listener.onMinimum(temperature, steps, minState, minStateEnergy);
+                        listener.onMinimum(temperature, steps, minState, problem.energy(minState));
                     }
                 }
             }
@@ -130,7 +123,7 @@ public class Solver<T extends SearchState<T>> {
         if (energyChange < 0.0) {
             return true;
         } else {
-            return random.nextDouble() <= Math.exp(-1.0 * energyChange / temperature);
+            return random.nextDouble() <= Math.exp(-energyChange / temperature);
         }
     }
 }
