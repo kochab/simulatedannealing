@@ -111,7 +111,7 @@ public class Solver<T extends SearchState<T>> {
                     minState = currentState;
                     // Call the minimum listener callback if it exists.
                     if (listener != null) {
-                        listener.onMinimum(temperature, steps, minState, problem.energy(minState));
+                        listener.onMinimum(temperature, steps, minState);
                     }
                 }
             }
