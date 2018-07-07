@@ -71,7 +71,7 @@ public class Solver<T extends SearchState<T>> {
 
         // If the initial state is invalid (energy=NaN), keep trying mutating it until a state with a valid
         // (non-NaN) energy is produced.
-        while (!Double.isNaN(problem.energy(currentState))) {
+        while (Double.isNaN(problem.energy(currentState))) {
             currentState = currentState.step();
         }
 
@@ -93,7 +93,7 @@ public class Solver<T extends SearchState<T>> {
 
             // If the next state is invalid (energy=NaN), keep mutating its predecessor until a state with
             // a valid (non-NaN) energy value is produced.
-            while (!Double.isNaN(problem.energy(nextState))) {
+            while (Double.isNaN(problem.energy(nextState))) {
                 nextState = currentState.step();
             }
 
