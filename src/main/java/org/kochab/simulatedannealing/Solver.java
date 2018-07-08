@@ -12,6 +12,7 @@ public class Solver<T extends SearchState<T>> {
     final Scheduler scheduler;
     final Random random;
     final MinimumListener<? super T> listener;
+    long steps = 0;
 
     /**
      * Creates a new optimizer.
@@ -61,6 +62,24 @@ public class Solver<T extends SearchState<T>> {
     }
 
     /**
+     * Returns the solver's iteration counter.
+     *
+     * @return The value of the solver's iteration counter.
+     */
+    public long getSteps() {
+        return steps;
+    }
+
+    /**
+     * Sets the solver's iteration counter.
+     *
+     * @param steps The new value of the solver's iteration counter.
+     */
+    public void setSteps(long steps) {
+        this.steps = steps;
+    }
+
+    /**
      * Solves the minimization problem.
      *
      * @return The state with the least amount of energy (minimum).
@@ -71,8 +90,6 @@ public class Solver<T extends SearchState<T>> {
 
         // At the first iteration, the minimum state (i.e. state with the least energy) is the initial state.
         T minState = currentState;
-
-        long steps = 0;
 
         for (;;) {
             double temperature = scheduler.getTemperature(steps++);
