@@ -16,23 +16,28 @@ Using [jitpack.io](https://jitpack.io/#kochab/simulatedannealing)
 <dependency>
   <groupId>com.github.kochab</groupId>
   <artifactId>simulatedannealing</artifactId>
-  <version>0.0.18</version>
+  <version>0.1.0</version>
 </dependency>
 ```
 
 ## Usage
-You will need to implement the `SearchState<T>` interface. It defines only one method, `T step()`, which should return a randomly chosen perturbation of the current state. Also, you will need to implement the `Problem<T>` interface, which initializes a state and evaluates the energey of states.
+You will need to implement the `Minimizable<T>` interface. It defines only two methods, `T next(T state)`, which should return a randomly chosen perturbation of the given state, and `double energy(T state)`, which returns the energy level of the given state.
 
 You will need to choose a `Scheduler` implementation, which determines the speed and shape of the annealing process. We provide two built-in options, `LinearDecayScheduler` and `ExponentialDecayScheduler`.
 
-Finally, just create a `Solver` and call solve!
+Finally, just create a `Solver` and iterate over the solution space.
 
 ```java
 Scheduler scheduler = new LinearDecayScheduler(INITIAL_TEMPERATURE, NUMBER_OF_STEPS);
-Problem<VRPSearchState> problem = new VehicleRoutingProblem(...);
-Solver<VRPSearchState> solver = new Solver(problem, scheduler);
-VRPSearchState solution = solver.solve();
+Minimizable<VRPSearchState> mz = new VehicleRoutingProblem(...);
+Solver<VRPSearchState> solver = new Solver(mz, scheduler, INITIAL_STATE);
+for (Candidate<VRPSearchState> candidate : solver) {
+    if (candidate.isMinimum()) { ... }
+    else { ... }
+}
 ```
+
+The last minimum found (`candidate.isMinimum()`) is the global minimum.
 
 ## Examples
 
