@@ -7,7 +7,7 @@ import java.util.Random;
 /**
  * Simulated annealing optimizer.
  *
- * @param <T> Type of the optimization problem's search states.
+ * @param <T> Type of the optimization problem's parameters.
  */
 public class Solver<T> implements Iterable<Candidate<T>> {
     final Minimizable<T> minimizable;
