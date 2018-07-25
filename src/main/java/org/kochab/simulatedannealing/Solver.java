@@ -77,8 +77,8 @@ public class Solver<T> implements Iterable<Candidate<T>> {
         public Candidate<T> next() {
             if (temperature > 0) {
                 final T succ = minimizable.next(state);
-                final double dT = minimizable.energy(succ) - minimizable.energy(state);
-                if (accept(temperature, dT)) {
+                final double dE = minimizable.energy(succ) - minimizable.energy(state);
+                if (accept(temperature, dE)) {
                     state = succ;
                     if (minimizable.energy(state) < minimizable.energy(minimum)) {
                         minimum = state;
@@ -104,11 +104,11 @@ public class Solver<T> implements Iterable<Candidate<T>> {
     }
 
     /** Always accept changes that decrease energy. Otherwise, use the simulated annealing. */
-    boolean accept(double t, double dT) {
+    boolean accept(double t, double dE) {
         if (dT < 0.0) {
             return true;
         } else {
-            return random.nextDouble() <= Math.exp(-dT / t);
+            return random.nextDouble() <= Math.exp(-dE / t);
         }
     }
 }
